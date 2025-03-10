@@ -65,6 +65,9 @@ function show(req, res) {
     // Query per ottenere un singolo film
     const sql = 'SELECT * FROM movies WHERE id = ?';
 
+    // Aggiungo il percorso dell'immagine come variabile d'ambiente
+    const imagePath = `${req.protocol}://${req.get('host')}/img/movies/`;
+
     // Eseguo la query con l'ID come parametro
     connection.query(sql, [movieId], (err, results) => {
 
@@ -83,12 +86,22 @@ function show(req, res) {
 
         // Modifica i risultati per aggiungere l'immagine
         results.forEach(movie => {
+
             if (movie.image) {
+
                 // Se l'immagine esiste, crea il percorso completo
-                movie.image = `${req.protocol}://${req.get('host')}/img/movies/${movie.image}`;
+                movie.image = `${imagePath}${movie.image}`;
+
+            } else {
+
+                // Gestisco i casi in cui non ci sia immagine
+                movie.image = null;
+
             }
+
         });
 
+        // Rispondi con i dati del film
         res.json(results);
 
     });
