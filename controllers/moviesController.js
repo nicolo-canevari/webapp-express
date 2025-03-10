@@ -27,11 +27,30 @@ function index(req, res) {
 
         }
 
-        // Rispondi con i risultati della query
-        res.json(results);
+        // Ciclo .map sul results (su tutto l'array di oggetti) dove posso andare a modificare il valore di img
+        const moviesWithImages = results.map(movie => {
+
+            // Se c'è un'immagine nel film, aggiorno il campo `image` con il percorso completo
+            if (movie.image) {
+
+                movie.image = `${req.imagePath}${movie.image}`;
+
+            } else {
+
+                movie.image = null; // Se non c'è immagine, mantengo il valore null
+
+            }
+
+            // Restituisco l'intero oggetto film, includendo l'immagine
+            return movie;
+
+        });
+
+        // Rispondo con i risultati della query, ora comprensivi di immagini
+        res.json(moviesWithImages);
 
         // I risultati verranno stampati qui
-        console.log(results);
+        console.log(moviesWithImages);
 
     });
 
@@ -55,15 +74,22 @@ function show(req, res) {
             return res.status(500).json({ error: 'Database query failed' });
         }
 
-        // Se viene trovato il film, restituisci un errore 404
+        // Se non viene trovato il film, restituisci un errore 404
         if (results.length === 0) {
 
             return res.status(404).json({ error: 'Movie not found' });
 
         }
 
-        // Risponde con il film trovato
-        res.json(results[0]);
+        // Modifica i risultati per aggiungere l'immagine
+        results.forEach(movie => {
+            if (movie.image) {
+                // Se l'immagine esiste, crea il percorso completo
+                movie.image = `${req.protocol}://${req.get('host')}/img/movies/${movie.image}`;
+            }
+        });
+
+        res.json(results);
 
     });
 

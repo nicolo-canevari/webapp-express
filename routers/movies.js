@@ -6,14 +6,17 @@ const router = express.Router();
 // Importo il controller
 const movieController = require('../controllers/moviesController');
 
+// Importo il middleware dell'immagine
+const setImagePath = require('../middlewares/imagePath');
+
 
 // ROTTE
 
 // Index: Visualizza tutti i post
-router.get('/', movieController.index);
+router.get('/', setImagePath, movieController.index);
 
 // Show: Visualizza un post tramite id
-router.get('/:id', movieController.show);
+router.get('/:id', setImagePath, movieController.show);
 
 // Store: Crea un nuovo post
 // router.post('/', movieController.store);

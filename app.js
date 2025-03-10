@@ -9,12 +9,20 @@ const port = process.env.PORT || 3000
 // Importo i Middleware
 const notFound = require('./middlewares/notFound');
 const errorHandler = require('./middlewares/errorHandler');
+const imagePathMiddleware = require('./middlewares/imagePath');
 
-// Importo il router dei post
-const moviesRouter = require('./routers/movies');
 
 // Middleware per gestire le richieste JSON
 app.use(express.json());
+
+// Gestione dei file statici (immagini) dalla cartella public/img/movies
+app.use(express.static('public'));
+
+// Registro il middleware di path imgs
+app.use(imagePathMiddleware);
+
+// Importo il router dei post
+const moviesRouter = require('./routers/movies');
 
 // Definisce un middleware che collega il router moviesRouter alla rotta base /movies
 app.use("/api/movies", moviesRouter);
@@ -25,9 +33,6 @@ app.get('/api', (req, res) => {
     res.send('Lista Film');
 
 })
-
-// Gestione dei file statici (immagini) dalla cartella public/img/movies
-app.use('/img/movies', express.static('public/img/movies'));
 
 // Middleware per gestire le rotte non trovate (404)
 app.use(notFound);
