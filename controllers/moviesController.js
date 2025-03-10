@@ -4,7 +4,7 @@ const connection = require('../data/db.js');
 
 // ROTTE (endpoints) =
 
-// Funzione per visualizzare tutti i "posts"
+// Funzione INDEX per visualizzare tutti i "movies"
 function index(req, res) {
 
     // Query da lanciare
@@ -30,7 +30,36 @@ function index(req, res) {
 
 }
 
+// Funzione SHOW per visualizzare un singolo "movie" tramite ID
+function show(req, res) {
+
+    // Estraggo l'ID dal parametro della rotta
+    const movieId = req.params.id;
+
+    // Query per ottenere un singolo film
+    const sql = 'SELECT * FROM movies WHERE id = ?';
+
+    // Eseguo la query con l'ID come parametro
+    connection.query(sql, [movieId], (err, results) => {
+
+        if (err) {
+            // Gestione dell'errore
+            return res.status(500).json({ error: 'Database query failed' });
+        }
+
+        // Se il film non viene trovato
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+
+        // Risponde con il film trovato
+        res.json(results[0]);
+
+    });
+
+}
 
 
-// Esporto tutto
-module.exports = { index }
+
+// Esporto le funzioni
+module.exports = { index, show }

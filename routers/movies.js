@@ -13,7 +13,7 @@ const movieController = require('../controllers/moviesController');
 router.get('/', movieController.index);
 
 // Show: Visualizza un post tramite id
-// router.get('/:id', movieController.show);
+router.get('/:id', movieController.show);
 
 // Store: Crea un nuovo post
 // router.post('/', movieController.store);
