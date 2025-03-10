@@ -1,9 +1,9 @@
 // Importo il modulo express
-const express = require('express');
+const express = require('express')
 // Creo un'istanza dell'applicazione Express
-const app = express();
+const app = express()
 // Definisco la porta su cui il server ascolterà le richieste HTTP
-const port = 3000;
+const port = process.env.PORT || 3000
 
 
 // Gestisce la rotta principale
