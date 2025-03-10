@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 
 
-// Gestisco la rotta principale
+// Gestisce la rotta principale
 app.get('/', (req, res) => {
 
     res.send('Ciao sono la rotta Home della tua Webapp');
@@ -38,7 +38,7 @@ app.listen(port, () => {
 
 });
 
-// gestione dei file statici della cartella 'public'
+// Gestione dei file statici della cartella 'public'
 app.use(express.static('public'));
 
 
