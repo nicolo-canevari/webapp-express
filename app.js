@@ -6,26 +6,28 @@ const app = express()
 const port = process.env.PORT || 3000
 
 
-// Gestisce la rotta principale
+// Importo i Middleware
+const notFound = require('./middlewares/notFound');
+const errorHandler = require('./middlewares/errorHandler');
+
+// Importo il router dei post
+const moviesRouter = require('./routers/movies');
+
+// Middleware per gestire le richieste JSON
+app.use(express.json());
+
+// Definisce un middleware che collega il router moviesRouter alla rotta base /movies
+app.use("/api/movies", moviesRouter);
+
+// Gestisce la rotta principale (HOME)
 app.get('/api', (req, res) => {
 
     res.send('Lista Film');
 
 })
 
-// Importo il router dei post
-const moviesRouter = require('./routers/movies');
-
-// Definisce un middleware che collega il router moviesRouter alla rotta base /movies
-app.use("/api/movies", moviesRouter);
-
-
-// Middleware per gestire le richieste JSON
-app.use(express.json());
-
-// Importo i Middleware
-const notFound = require('./middlewares/notFound');
-const errorHandler = require('./middlewares/errorHandler');
+// Gestione dei file statici (immagini) dalla cartella public/img/movies
+app.use('/img/movies', express.static('public/img/movies'));
 
 // Middleware per gestire le rotte non trovate (404)
 app.use(notFound);
@@ -41,8 +43,7 @@ app.listen(port, () => {
 
 });
 
-// Gestione dei file statici della cartella 'public'
-app.use(express.static('public'));
+
 
 
 
