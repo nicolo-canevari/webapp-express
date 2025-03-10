@@ -4,10 +4,10 @@ const mysql = require('mysql2');
 // Creo la connessione al database utilizzando le credenziali
 const connection = mysql.createConnection({
 
-    host: 'localhost',
-    user: 'root',
-    password: 'Pizzapazza33',
-    database: 'movies_db'
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'Pizzapazza33',
+    database: process.env.DB_NAME || 'movies_db'
 
 });
 

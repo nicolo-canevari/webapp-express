@@ -1,2 +1,3 @@
 # Serve a dire a Git quali file e cartelle ignorare quando fai commit o push nel tuo repository
 node_modules/
+# .env

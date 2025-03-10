@@ -4,7 +4,7 @@
   "description": "webapp express",
   "main": "app.js",
   "scripts": {
-    "watch": "node --watch app.js",
+    "watch": "node --env-file=.env --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

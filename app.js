@@ -7,14 +7,17 @@ const port = process.env.PORT || 3000
 
 
 // Gestisce la rotta principale
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
 
-    res.send('Ciao sono la rotta Home della tua Webapp');
+    res.send('Lista Film');
 
 })
 
-// Utilizzo il router dei post per le rotte /posts
-// app.use("/movies", postRouter);
+// Importo il router dei post
+const moviesRouter = require('./routers/movies');
+
+// Definisce un middleware che collega il router moviesRouter alla rotta base /movies
+app.use("/api/movies", moviesRouter);
 
 
 // Middleware per gestire le richieste JSON
