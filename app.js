@@ -4,7 +4,14 @@ const express = require('express')
 const app = express()
 // Definisco la porta su cui il server ascolterà le richieste HTTP
 const port = process.env.PORT || 3000
+// Importo CORS
+const cors = require('cors');
 
+// Abilita CORS per tutte le origini
+// app.use(cors());
+
+// Abilita CORS per l' URL del FE
+app.use(cors({ origin: process.env.FE_APP }));
 
 // Importo i Middleware
 const notFound = require('./middlewares/notFound');
