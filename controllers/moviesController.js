@@ -65,6 +65,9 @@ function show(req, res) {
     // Query per ottenere un singolo film
     const sql = 'SELECT * FROM movies WHERE id = ?';
 
+    // Query per ottenere le recensioni
+    const reviewSql = 'SELECT * FROM reviews WHERE movie_id = ?';
+
     // Aggiungo il percorso dell'immagine come variabile d'ambiente
     const imagePath = `${req.protocol}://${req.get('host')}/img/movies/`;
 
@@ -101,8 +104,23 @@ function show(req, res) {
 
         });
 
-        // Rispondi con i dati del film
-        res.json(results);
+        // Recupero le recensioni per il film
+        connection.query(reviewSql, [movieId], (err, reviewResults) => {
+
+            if (err) {
+
+                // Se c'è un errore, invia una risposta con status 500
+                return res.status(500).json({ error: 'Database query failed for reviews' });
+
+            }
+
+            // Aggiungo le recensioni all'oggetto film
+            results[0].reviews = reviewResults;
+
+            // Risponde con i dati del film, inclusi le recensioni
+            res.json(results[0]);
+
+        });
 
     });
 
