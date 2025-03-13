@@ -140,7 +140,7 @@ const store = (req, res) => {
 
     }
 
-    // Eseguo la query SQL per inserire una nuova recensione nel database
+    // Eseguo la query SQL per inserire la nuova recensione
     connection.query(
 
         "INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())",
@@ -148,21 +148,16 @@ const store = (req, res) => {
 
         (err, result) => {
 
-            // Se c'è un errore nell'esecuzione della query
             if (err) {
 
                 console.error("Errore durante l'inserimento della recensione:", err);
-
                 return res.status(500).json({ error: "Errore interno del server" });
 
             }
 
-            // Se la query è andata a buon fine
             res.status(201).json({
 
                 message: "Recensione salvata con successo",
-
-                // ID della recensione appena inserita nel database
                 review_id: result.insertId
 
             });

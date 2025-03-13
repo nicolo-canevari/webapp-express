@@ -27,5 +27,6 @@ router.post('/reviews', movieController.store);
 // Destroy: Cancella un post tramite id
 // router.delete('/:id', movieController.destroy);
 
+
 // esportazione del router
 module.exports = router;
