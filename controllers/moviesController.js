@@ -129,11 +129,14 @@ function show(req, res) {
 // Funzione STORE per l'aggiunta di un nuovo post
 const store = (req, res) => {
 
+    // Ottengo l'ID del film dalla rotta
+    const movieId = req.params.id;
+
     // Estraggo i dati dal corpo della richiesta (req.body)
-    const { movie_id, name, vote, text } = req.body;
+    const { name, vote, text } = req.body;
 
     // Controlla che tutti i campi siano presenti
-    if (!movie_id || !name || !vote || !text) {
+    if (!name || !vote || !text) {
 
         // Se manca uno dei campi, ritorna un errore 400 con un messaggio
         return res.status(400).json({ error: "Tutti i campi sono obbligatori" });
@@ -155,10 +158,21 @@ const store = (req, res) => {
 
             }
 
+            // Recupero l'ID della recensione appena inserita
+            const newReview = {
+
+                id: result.insertId,
+                movie_id: movieId,
+                name,
+                vote,
+                text
+
+            };
+
             res.status(201).json({
 
                 message: "Recensione salvata con successo",
-                review_id: result.insertId
+                review_id: newReview
 
             });
 
