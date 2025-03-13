@@ -126,7 +126,51 @@ function show(req, res) {
 
 }
 
+// Funzione STORE per l'aggiunta di un nuovo post
+const store = (req, res) => {
+
+    // Estraggo i dati dal corpo della richiesta (req.body)
+    const { movie_id, name, vote, text } = req.body;
+
+    // Controlla che tutti i campi siano presenti
+    if (!movie_id || !name || !vote || !text) {
+
+        // Se manca uno dei campi, ritorna un errore 400 con un messaggio
+        return res.status(400).json({ error: "Tutti i campi sono obbligatori" });
+
+    }
+
+    // Eseguo la query SQL per inserire una nuova recensione nel database
+    connection.query(
+
+        "INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())",
+        [movie_id, name, vote, text],
+
+        (err, result) => {
+
+            // Se c'è un errore nell'esecuzione della query
+            if (err) {
+
+                console.error("Errore durante l'inserimento della recensione:", err);
+
+                return res.status(500).json({ error: "Errore interno del server" });
+
+            }
+
+            // Se la query è andata a buon fine
+            res.status(201).json({
+
+                message: "Recensione salvata con successo",
+
+                // ID della recensione appena inserita nel database
+                review_id: result.insertId
+
+            });
+
+        });
+
+};
 
 
 // Esporto le funzioni
-module.exports = { index, show }
+module.exports = { index, show, store }

@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000
 // Importo CORS
 const cors = require('cors');
 
+
 // Abilita CORS per tutte le origini
 // app.use(cors());
 
@@ -31,8 +32,14 @@ app.use(imagePathMiddleware);
 // Importo il router dei post
 const moviesRouter = require('./routers/movies');
 
+// Importo il router delle recensioni
+const reviewRoutes = require('./routers/reviews');
+
 // Definisce un middleware che collega il router moviesRouter alla rotta base /movies
 app.use("/api/movies", moviesRouter);
+
+// Definisce un middleware che collega il router reviewRoutes alla rotta base /reviews
+app.use('/api/reviews', reviewRoutes);
 
 // Gestisce la rotta principale (HOME)
 app.get('/api', (req, res) => {
