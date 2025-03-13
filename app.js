@@ -35,6 +35,7 @@ const moviesRouter = require('./routers/movies');
 // Importo il router delle recensioni
 const reviewRoutes = require('./routers/reviews');
 
+
 // Definisce un middleware che collega il router moviesRouter alla rotta base /movies
 app.use("/api/movies", moviesRouter);
 

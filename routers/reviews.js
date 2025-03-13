@@ -10,6 +10,6 @@ router.get('/', movieController.index);
 router.get('/:id', movieController.show);
 
 // Crea una nuova recensione
-router.post('/reviews', movieController.store);
+router.post('/', movieController.store);
 
 module.exports = router;
