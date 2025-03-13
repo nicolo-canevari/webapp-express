@@ -143,42 +143,23 @@ const store = (req, res) => {
 
     }
 
+    const sql = 'INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
+
     // Eseguo la query SQL per inserire la nuova recensione
-    connection.query(
+    connection.query(sql, [movieId, name, vote, text], (err, result) => {
 
-        "INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())",
-        [movie_id, name, vote, text],
+        if (err) {
 
-        (err, result) => {
+            return res.status(500).json({ error: 'Errore durante l\'inserimento della recensione' });
 
-            if (err) {
+        }
 
-                console.error("Errore durante l'inserimento della recensione:", err);
-                return res.status(500).json({ error: "Errore interno del server" });
+        res.status(201).json({ message: 'Recensione salvata con successo' });
 
-            }
-
-            // Recupero l'ID della recensione appena inserita
-            const newReview = {
-
-                id: result.insertId,
-                movie_id: movieId,
-                name,
-                vote,
-                text
-
-            };
-
-            res.status(201).json({
-
-                message: "Recensione salvata con successo",
-                review_id: newReview
-
-            });
-
-        });
+    });
 
 };
+
 
 
 // Esporto le funzioni
