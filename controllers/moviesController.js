@@ -153,11 +153,20 @@ const store = (req, res) => {
 
         }
 
-        res.status(201).json({ message: 'Recensione salvata con successo' });
+        // Respondo con i dati della recensione salvata
+        res.status(201).json({
+
+            id: result.insertId,
+            name,
+            vote,
+            text
+
+        });
 
     });
 
 };
+
 
 // Funzione STORE per aggiungere un nuovo film
 function storeMovie(req, res, next) {
