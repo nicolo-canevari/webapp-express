@@ -20,7 +20,6 @@ function index(req, res) {
 
         }
 
-
         if (results.length === 0) {
             // Se non ci sono film trovati, restituisci un errore 404
             return res.status(404).json({ error: 'No movies found' });
@@ -160,6 +159,37 @@ const store = (req, res) => {
 
 };
 
+// Funzione STORE per aggiungere un nuovo film
+const storeMovie = (req, res) => {
+
+    // Estraggo i dati dal corpo della richiesta
+    const { title, director, genre, release_year, image, abstract } = req.body;
+
+    // Controllo che tutti i campi obbligatori siano presenti
+    if (!title || !director || !genre || !release_year) {
+
+        return res.status(400).json({ error: "Titolo, regista, genere e anno di uscita sono obbligatori" });
+
+    }
+
+    // Query SQL per inserire un nuovo film
+    const sql = 'INSERT INTO movies (title, director, genre, release_year, image, abstract, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())';
+
+    // Eseguo la query con i valori passati
+    connection.query(sql, [title, director, genre, release_year, image, abstract], (err, result) => {
+
+        if (err) {
+
+            return res.status(500).json({ error: 'Errore durante l\'inserimento del film' });
+
+        }
+
+        // Risposta con successo
+        res.status(201).json({ message: 'Film salvato con successo', movieId: result.insertId });
+
+    });
+
+};
 
 
 // Esporto le funzioni

@@ -32,7 +32,9 @@ app.use("/api/movies", moviesRouter);
 
 // Gestisce la rotta principale (HOME)
 app.get('/api', (req, res) => {
+
     res.send('Lista Film');
+
 });
 
 // Middleware per gestire le rotte non trovate (404)
