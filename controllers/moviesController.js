@@ -142,6 +142,7 @@ const store = (req, res) => {
 
     }
 
+    //  Inserire una nuova riga nella tabella reviews del database
     const sql = 'INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
 
     // Eseguo la query SQL per inserire la nuova recensione
