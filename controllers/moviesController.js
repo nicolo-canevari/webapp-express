@@ -175,6 +175,7 @@ const storeMovie = (req, res) => {
     // Query SQL per inserire un nuovo film
     const sql = 'INSERT INTO movies (title, director, genre, release_year, image, abstract, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())';
 
+
     // Eseguo la query con i valori passati
     connection.query(sql, [title, director, genre, release_year, image, abstract], (err, result) => {
 
@@ -193,4 +194,4 @@ const storeMovie = (req, res) => {
 
 
 // Esporto le funzioni
-module.exports = { index, show, store }
+module.exports = { index, show, store, storeMovie }

@@ -21,6 +21,9 @@ router.get('/:id', setImagePath, movieController.show);
 // Store: Crea un nuovo post
 router.post('/:id/reviews', movieController.store);
 
+// Store: Aggiungi un nuovo film
+router.post('/', movieController.storeMovie);
+
 // Update: Modifica un post tramite id
 // router.put('/:id', movieController.update);
 
