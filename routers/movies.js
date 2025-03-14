@@ -3,10 +3,13 @@ const express = require('express');
 // Creao un router in Express che vada a gestire le rotte in modo modulare e organizato 
 const router = express.Router();
 
-// Importo il controller
+// Importo Multer e la configurazione
+const upload = require('../middlewares/multer');
+
+// Importo il controller per gestire la logica
 const movieController = require('../controllers/moviesController');
 
-// Importo il middleware dell'immagine
+// Importo il middleware
 const setImagePath = require('../middlewares/imagePath');
 
 
@@ -22,7 +25,7 @@ router.get('/:id', setImagePath, movieController.show);
 router.post('/:id/reviews', movieController.store);
 
 // Store: Aggiungi un nuovo film
-router.post('/', movieController.storeMovie);
+router.post('/', upload.single('image'), movieController.storeMovie);
 
 // Update: Modifica un post tramite id
 // router.put('/:id', movieController.update);

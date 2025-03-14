@@ -160,37 +160,51 @@ const store = (req, res) => {
 };
 
 // Funzione STORE per aggiungere un nuovo film
-const storeMovie = (req, res) => {
+function storeMovie(req, res, next) {
 
-    // Estraggo i dati dal corpo della richiesta
-    const { title, director, genre, release_year, image, abstract } = req.body;
+    const { title, director, genre, release_year, abstract } = req.body;
 
-    // Controllo che tutti i campi obbligatori siano presenti
+    // Gestisco il valore del nome del file immagine creato da Multer
+    const imageName = req.file ? req.file.filename : null;
+
+    // Controllo se tutti i campi obbligatori sono presenti
     if (!title || !director || !genre || !release_year) {
 
         return res.status(400).json({ error: "Titolo, regista, genere e anno di uscita sono obbligatori" });
 
     }
 
-    // Query SQL per inserire un nuovo film
-    const sql = 'INSERT INTO movies (title, director, genre, release_year, image, abstract, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())';
+    // Creo la query per inserire il nuovo film nel database
+    const query = "INSERT INTO movies (title, director, genre, release_year, image, abstract, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
+    // Eseguo la query per l'inserimento del film
+    connection.query(query,
 
-    // Eseguo la query con i valori passati
-    connection.query(sql, [title, director, genre, release_year, image, abstract], (err, result) => {
+        [title, director, genre, release_year, imageName, abstract],
 
-        if (err) {
+        (err, result) => {
 
-            return res.status(500).json({ error: 'Errore durante l\'inserimento del film' });
+            if (err) {
+
+                console.log(err);
+                return next(new Error("Errore interno del server"));
+
+            }
+
+            // Risposta di successo
+            res.status(201).json({
+
+                status: "success",
+                message: "Film creato con successo!",
+                movieId: result.insertId,
+
+            });
 
         }
 
-        // Risposta con successo
-        res.status(201).json({ message: 'Film salvato con successo', movieId: result.insertId });
+    );
 
-    });
-
-};
+}
 
 
 // Esporto le funzioni
